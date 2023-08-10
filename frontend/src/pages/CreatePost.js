@@ -20,6 +20,7 @@ export default function CreatePost() {
     const response = await fetch('https://blogit-sioi.onrender.com/post', {
       method: 'POST',
       body: data,
+      mode:'no-cors',
       credentials: 'include',
     });
     if (response.ok) {
