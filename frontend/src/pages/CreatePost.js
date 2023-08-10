@@ -3,6 +3,7 @@
 import {useState} from "react";
 import {Navigate} from "react-router-dom";
 import Editor from "../Editor";
+import { useLocation } from "react-router-dom";
 
 
 export default function CreatePost() {
@@ -15,7 +16,7 @@ export default function CreatePost() {
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const token = queryParams.get("token") || ""; 
-  
+
   async function createNewPost(ev) {
     ev.preventDefault();
 
