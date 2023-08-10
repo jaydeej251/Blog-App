@@ -16,18 +16,19 @@ export default function LoginPage ( ) {
           
           body: JSON.stringify({username, password}),
           headers: {'Content-Type':'application/json'},
-          
+          credentials:'include',
           
         });
         if(response.ok){
-            const {token} = await response.json();
-            document.cookie = `token=${token}; HttpOnly; Secure; SameSite=Strict`;
-            setRedirect(true);
-            
+        
+            response.json().then(userInfo => {
+                setUserInfo(userInfo);
+                setRedirect(true);
+            })
         } else {
             alert ('wrong credentials');
         }
-    } catch(error) {
+    }catch(error) {
         console.error("Login error:", error.message);
         } 
     } 
