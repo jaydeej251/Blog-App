@@ -18,8 +18,9 @@ export default function CreatePost() {
     data.set('summary', summary);
     data.set('content', content);
     data.set('file', files[0]);
-    ev.preventDefault();
     
+    ev.preventDefault();
+
     const token = localStorage.getItem('token');
 
     try {
@@ -27,7 +28,7 @@ export default function CreatePost() {
         method: 'POST',
         body: data,
         headers: {
-          Authorization: `Bearer ${userInfo.token}`, 
+          Authorization: `Bearer ${token}`, 
         },
         credentials: 'include',
       });
