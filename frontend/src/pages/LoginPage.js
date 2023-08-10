@@ -13,7 +13,7 @@ export default function LoginPage ( ) {
         ev.preventDefault();
         const response = await fetch('https://blogit-sioi.onrender.com/login', {
           method: 'POST',
-          
+          mode:"no-cors",
           body: JSON.stringify({username, password}),
           headers: {'Content-Type':'application/json'},
           credentials:'include',
