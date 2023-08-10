@@ -56,7 +56,7 @@ app.post('/register', async (req,res) => {
       const passOk = bcrypt.compareSync(password, userDoc.password);
       if (passOk) {
         // logged in
-        jwt.sign({ username, id: userDoc._id }, secret, {}, (err, token) => {
+        jwt.sign({ username, id: userDoc._id }, process.env.secret, {}, (err, token) => {
           if (err) {
             console.error(err);
             return res.status(500).json({ error: 'Error creating JWT token' });
