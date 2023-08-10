@@ -1,5 +1,5 @@
 import { useContext, useState } from 'react';
-import { Navigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { UserContext } from '../UserContext';
 
 export default function LoginPage ( ) {
@@ -7,10 +7,12 @@ export default function LoginPage ( ) {
     const [password,setPassword] = useState('');
     const [redirect,setRedirect] = useState(false);
     const {setUserInfo} = useContext(UserContext)
+    const navigate = useNavigate();
     async function login(ev) {
         ev.preventDefault();
         const response = await fetch('https://blogit-sioi.onrender.com/login', {
           method: 'POST',
+          mode:"no-cors",
           body: JSON.stringify({username, password}),
           headers: {'Content-Type':'application/json'},
           credentials: 'include',
@@ -28,7 +30,7 @@ export default function LoginPage ( ) {
         }
     } 
     if (redirect){
-        return <Navigate to={'/'}/>
+        navigate("/")
     }
     
     return(
