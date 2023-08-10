@@ -19,6 +19,8 @@ export default function CreatePost() {
     data.set('content', content);
     data.set('file', files[0]);
     ev.preventDefault();
+    
+    const token = localStorage.getItem('token');
 
     try {
       const response = await fetch('https://blogit-sioi.onrender.com/post', {
