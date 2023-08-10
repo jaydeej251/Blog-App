@@ -10,7 +10,7 @@ export default function CreatePost() {
   const [content,setContent] = useState('');
   const [files, setFiles] = useState(null);
   const [redirect, setRedirect] = useState(false);
-  
+
   async function createNewPost(ev) {
     ev.preventDefault();
 
@@ -26,7 +26,7 @@ export default function CreatePost() {
       const response = await fetch("https://blogit-sioi.onrender.com/post", {
         method: "POST",
         body: formData,
-        mode:'no-cors',
+       
         credentials: "include",
       });
 
