@@ -1,53 +1,32 @@
-// import ReactQuill from "react-quill";
-// import 'react-quill/dist/quill.snow.css';
 import {useState} from "react";
 import {Navigate} from "react-router-dom";
 import Editor from "../Editor";
-import { useLocation } from "react-router-dom";
-
 
 export default function CreatePost() {
   const [title,setTitle] = useState('');
   const [summary,setSummary] = useState('');
   const [content,setContent] = useState('');
-  const [files, setFiles] = useState(null);
+  const [files, setFiles] = useState('');
   const [redirect, setRedirect] = useState(false);
-
-  const location = useLocation();
-  const queryParams = new URLSearchParams(location.search);
-  const token = queryParams.get("token") || ""; 
-
   async function createNewPost(ev) {
+    const data = new FormData();
+    data.set('title', title);
+    data.set('summary', summary);
+    data.set('content', content);
+    data.set('file', files[0]);
     ev.preventDefault();
-
-    const formData = new FormData();
-    formData.append("title", title);
-    formData.append("summary", summary);
-    formData.append("content", content);
-    if (files) {
-      formData.append("file", files[0]);
-    }
-    
-    try {
-      const response = await fetch("https://blogit-sioi.onrender.com/post", {
-        method: "POST",
-        body: formData,
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-        credentials: "include",
-      });
-
-      if (response.ok) {
-        setRedirect(true);
-      }
-    } catch (error) {
-      console.error("Error creating post:", error.message);
+    const response = await fetch('https://blogit-sioi.onrender.com/post', {
+      method: 'POST',
+      body: data,
+      credentials: 'include',
+    });
+    if (response.ok) {
+      setRedirect(true);
     }
   }
 
   if (redirect) {
-    return <Navigate to={"/"} />;
+    return <Navigate to={'/'} />
   }
   return (
     <form onSubmit={createNewPost}>
