@@ -25,7 +25,7 @@ export default function CreatePost() {
         method: 'POST',
         body: data,
         headers: {
-          Authorization: `Bearer ${userInfo.token}`, // Use the token from the context
+          Authorization: `Bearer ${userInfo.token}`, 
         },
         credentials: 'include',
       });

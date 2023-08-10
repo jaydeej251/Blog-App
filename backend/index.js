@@ -97,11 +97,13 @@ app.post('/register', async (req,res) => {
       fs.renameSync(path, newPath);
   
       const { token } = req.cookies;
+      console.log('Received token:', token)
       jwt.verify(token, process.env.secret, {}, async (err, info) => {
         if (err) {
-          console.error(err);
+          console.error("token verification:", err);
           return res.status(401).json({ error: 'Invalid token' });
         }
+        console.log('Decoded token:',info)
   
         const { title, summary, content } = req.body;
         const postDoc = await Post.create({
@@ -111,6 +113,8 @@ app.post('/register', async (req,res) => {
           cover: newPath,
           author: info.id,
         });
+        console.log('New post created:', postDoc); // Add this line
+
         res.json(postDoc);
       });
     } catch (error) {
