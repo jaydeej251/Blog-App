@@ -11,19 +11,19 @@ export default function LoginPage ( ) {
         ev.preventDefault();
         const response = await fetch('https://blogit-sioi.onrender.com/login', {
           method: 'POST',
+          mode: 'cors',
           body: JSON.stringify({username, password}),
           headers: {'Content-Type':'application/json'},
           credentials: 'include',
           
         });
-        if(response.ok){
-            response.json().then(userInfo => {
-                setUserInfo(userInfo);
-                setRedirect(true);
-            })
-            
-
-        } else {
+        if (response.ok) {
+            const { token } = await response.json();
+    
+            localStorage.setItem('token', token);
+    
+            setRedirect(true);
+          } else {
             alert ('wrong credentials');
         }
     } 
