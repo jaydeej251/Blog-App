@@ -1,13 +1,14 @@
-import {useContext, useEffect, useState} from "react";
-import {useParams} from "react-router-dom";
-import {formatISO9075} from "date-fns";
-import {UserContext} from "../UserContext";
-import {Link} from 'react-router-dom';
+import { useContext, useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import { formatISO9075 } from "date-fns";
+import { UserContext } from "../UserContext";
+import { Link } from 'react-router-dom';
 
 export default function PostPage() {
-  const [postInfo,setPostInfo] = useState(null);
-  const {userInfo} = useContext(UserContext);
-  const {id} = useParams();
+  const [postInfo, setPostInfo] = useState(null);
+  const { userInfo } = useContext(UserContext);
+  const { id } = useParams();
+
   useEffect(() => {
     fetch(`https://blogit-sioi.onrender.com/post/${id}`)
       .then(response => {
@@ -15,10 +16,10 @@ export default function PostPage() {
           setPostInfo(postInfo);
         });
       });
-  }, []);
+  }, [id]);
 
   if (!postInfo) return '';
-
+  
   return (
     <div className="post-page">
       <h1>{postInfo.title}</h1>

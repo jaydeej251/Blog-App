@@ -2,35 +2,45 @@ import { useContext, useState } from 'react';
 import { Navigate } from 'react-router-dom';
 import { UserContext } from '../UserContext';
 
-export default function LoginPage ( ) {
-    const [username,setUsername] = useState('');
-    const [password,setPassword] = useState('');
-    const [redirect,setRedirect] = useState(false);
-    const {setUserInfo} = useContext(UserContext)
-    async function login(ev) {
-        ev.preventDefault();
-        const response = await fetch('https://blogit-sioi.onrender.com/login', {
-          method: 'POST',
-          mode: 'cors',
-          body: JSON.stringify({username, password}),
-          headers: {'Content-Type':'application/json'},
-          credentials: 'include',
-          
-        });
-        if (response.ok) {
-            const { token } = await response.json();
-    
-            localStorage.setItem('token', token);
-    
-            setRedirect(true);
-          } else {
-            alert ('wrong credentials');
-        }
-    } 
-    if (redirect){
-        return <Navigate to={'/'}/>
+export default function LoginPage() {
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [redirect, setRedirect] = useState(false);
+  const { setUserInfo } = useContext(UserContext);
+
+  async function login(ev) {
+    ev.preventDefault();
+    try {
+      const response = await fetch('https://blogit-sioi.onrender.com/login', {
+        method: 'POST',
+        mode: 'cors',
+        body: JSON.stringify({ username, password }),
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+      });
+
+      if (response.ok) {
+        const { token } = await response.json();
+
+        // Update userInfo using setUserInfo
+        setUserInfo({ token, username }); 
+
+        // Store token in localStorage
+        localStorage.setItem('token', token);
+
+        setRedirect(true);
+      } else {
+        alert('Wrong credentials');
+      }
+    } catch (error) {
+      console.error("Login error:", error.message);
     }
-    
+  }
+
+  if (redirect) {
+    return <Navigate to={'/'} />;
+  }
+
     return(
         <form className='login' onSubmit={login} >
             <h1>Login</h1>

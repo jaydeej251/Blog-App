@@ -1,13 +1,17 @@
-import {useState} from "react";
-import {Navigate} from "react-router-dom";
+import { useState, useContext } from "react";
+import { Navigate } from "react-router-dom";
 import Editor from "../Editor";
+import { UserContext } from "../UserContext"; // Import the UserContext
 
 export default function CreatePost() {
-  const [title,setTitle] = useState('');
-  const [summary,setSummary] = useState('');
-  const [content,setContent] = useState('');
+  const [title, setTitle] = useState('');
+  const [summary, setSummary] = useState('');
+  const [content, setContent] = useState('');
   const [files, setFiles] = useState('');
   const [redirect, setRedirect] = useState(false);
+
+  const { userInfo } = useContext(UserContext); // 
+
   async function createNewPost(ev) {
     const data = new FormData();
     data.set('title', title);
@@ -16,18 +20,16 @@ export default function CreatePost() {
     data.set('file', files[0]);
     ev.preventDefault();
 
-    const token = localStorage.getItem('token'); 
-
     try {
       const response = await fetch('https://blogit-sioi.onrender.com/post', {
         method: 'POST',
         body: data,
         headers: {
-          Authorization: `Bearer ${token}`, // Include the token in headers
+          Authorization: `Bearer ${userInfo.token}`, // Use the token from the context
         },
         credentials: 'include',
       });
-      
+
       if (response.ok) {
         setRedirect(true);
       }
@@ -37,8 +39,9 @@ export default function CreatePost() {
   }
 
   if (redirect) {
-    return <Navigate to={'/'} />
+    return <Navigate to={'/'} />;
   }
+
   return (
     <form onSubmit={createNewPost}>
       <input type="title"
