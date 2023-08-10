@@ -1,28 +1,32 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
+import { UserContext } from '../UserContext';
 import Post from '../Post';
 
 export default function IndexPage() {
-    const [posts,setPosts] = useState([]);
+    const { userInfo } = useContext(UserContext);
+    const [posts, setPosts] = useState([]);
+
     useEffect(() => {
-        const token = localStorage.getItem('token');
-        
-        fetch('https://blogit-sioi.onrender.com/post', {
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },
-        })
-        .then(response => response.json())
-        .then(posts => {
-            setPosts(posts);
-        });
-        
-    }, []);
+        if (userInfo) {
+            const token = userInfo.token;
+
+            fetch('https://blogit-sioi.onrender.com/post', {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            })
+            .then(response => response.json())
+            .then(posts => {
+                setPosts(posts);
+            });
+        }
+    }, [userInfo]);
 
     return (
         <div>
             {posts.length > 0 && posts.map(post => (
-                <Post {...post} />
-            )) }
+                <Post {...post} key={post._id} />
+            ))}
         </div>
     )
 }

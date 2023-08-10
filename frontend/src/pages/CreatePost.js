@@ -15,13 +15,24 @@ export default function CreatePost() {
     data.set('content', content);
     data.set('file', files[0]);
     ev.preventDefault();
-    const response = await fetch('https://blogit-sioi.onrender.com/post', {
-      method: 'POST',
-      body: data,
-      credentials: 'include',
-    });
-    if (response.ok) {
-      setRedirect(true);
+
+    const token = localStorage.getItem('token'); 
+
+    try {
+      const response = await fetch('https://blogit-sioi.onrender.com/post', {
+        method: 'POST',
+        body: data,
+        headers: {
+          Authorization: `Bearer ${token}`, // Include the token in headers
+        },
+        credentials: 'include',
+      });
+      
+      if (response.ok) {
+        setRedirect(true);
+      }
+    } catch (error) {
+      console.error("Error creating post:", error.message);
     }
   }
 
