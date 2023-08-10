@@ -3,14 +3,21 @@ import Post from '../Post';
 
 export default function IndexPage() {
     const [posts,setPosts] = useState([]);
-    useEffect(()=> {
-        fetch('https://blogit-sioi.onrender.com/post')
-            .then(response =>  response.json())
-            .then(posts => {
-                setPosts(posts);
+    useEffect(() => {
+        const token = localStorage.getItem('token');
+        
+        fetch('https://blogit-sioi.onrender.com/post', {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        })
+        .then(response => response.json())
+        .then(posts => {
+            setPosts(posts);
         });
         
-    },[]);
+    }, []);
+
     return (
         <div>
             {posts.length > 0 && posts.map(post => (
