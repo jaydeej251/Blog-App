@@ -17,7 +17,10 @@ const salt = bcrypt.genSaltSync(10);
 const app = express()
 dotenv.config();
 
-app.use(cors());
+app.use(cors({
+  origin:process.env.corsOption,
+  credentials:true,
+}));
 app.use(express.json());
 app.use(cookieParser());
 app.use('/uploads', express.static(__dirname + '/uploads'))
@@ -53,7 +56,7 @@ app.post('/register', async (req,res) => {
       const passOk = bcrypt.compareSync(password, userDoc.password);
       if (passOk) {
         // logged in
-        jwt.sign({ username, id: userDoc._id }, process.env.secret, {}, (err, token) => {
+        jwt.sign({ username, id: userDoc._id }, secret, {}, (err, token) => {
           if (err) {
             console.error(err);
             return res.status(500).json({ error: 'Error creating JWT token' });
@@ -71,6 +74,7 @@ app.post('/register', async (req,res) => {
       res.status(500).json({ error: 'Error during login' });
     }
   });
+
   
   app.get('/profile', (req,res) => {
     const {token} = req.cookies;
