@@ -22,7 +22,6 @@ export default function LoginPage ( ) {
         if(response.ok){
             const {token} = await response.json();
             document.cookie = `token=${token}; HttpOnly; Secure; SameSite=Strict`;
-            setUserInfo(userInfo);
             setRedirect(true);
             
         } else {
