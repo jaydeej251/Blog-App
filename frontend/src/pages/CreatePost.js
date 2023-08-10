@@ -26,7 +26,9 @@ export default function CreatePost() {
       const response = await fetch("https://blogit-sioi.onrender.com/post", {
         method: "POST",
         body: formData,
-       
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
         credentials: "include",
       });
 
