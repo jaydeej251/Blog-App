@@ -17,7 +17,7 @@ const salt = bcrypt.genSaltSync(10);
 const app = express()
 dotenv.config();
 
-app.use(cors({credentials:true, origin:process.env.corshost}));
+app.use(cors());
 app.use(express.json());
 app.use(cookieParser());
 app.use('/uploads', express.static(__dirname + '/uploads'))
