@@ -1,8 +1,10 @@
 import {useState} from "react";
+import { useNavigate } from 'react-router-dom';
 
 export default function RegisterPage() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const navigate = useNavigate();
   async function register(ev) {
     ev.preventDefault();
     const response = await fetch('https://blogit-sioi.onrender.com/register', {
@@ -12,6 +14,7 @@ export default function RegisterPage() {
     });
     if (response.status === 200) {
       alert('registration successful');
+      navigate("/login")
     } else {
       alert('registration failed');
     }
