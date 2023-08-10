@@ -9,6 +9,7 @@ export default function LoginPage ( ) {
     const {setUserInfo} = useContext(UserContext)
     const navigate = useNavigate();
     async function login(ev) {
+    try{
         ev.preventDefault();
         const response = await fetch('https://blogit-sioi.onrender.com/login', {
           method: 'POST',
@@ -19,15 +20,18 @@ export default function LoginPage ( ) {
           
         });
         if(response.ok){
+            const {token} = await response.json();
+            document.cookie = `token=${token}; HttpOnly; Secure; SameSite=Strict`;
             response.json().then(userInfo => {
                 setUserInfo(userInfo);
                 setRedirect(true);
             })
-            
-
         } else {
             alert ('wrong credentials');
         }
+    } catch(error) {
+        console.error("Login error:", error.message);
+        } 
     } 
     if (redirect){
         navigate("/")

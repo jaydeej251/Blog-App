@@ -4,6 +4,7 @@ import {useState} from "react";
 import {Navigate} from "react-router-dom";
 import Editor from "../Editor";
 
+
 export default function CreatePost() {
   const [title,setTitle] = useState('');
   const [summary,setSummary] = useState('');
@@ -11,6 +12,10 @@ export default function CreatePost() {
   const [files, setFiles] = useState(null);
   const [redirect, setRedirect] = useState(false);
 
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const token = queryParams.get("token") || ""; 
+  
   async function createNewPost(ev) {
     ev.preventDefault();
 
