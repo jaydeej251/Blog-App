@@ -108,7 +108,7 @@ app.post('/register', async (req,res) => {
     })
   }catch(error) {
     console.error(error);
-    res.status(500).json({ error: 'Error creating post' });
+    res.status(500).json({ error: 'Error creating post', error:error.message, });
   }
   });
   

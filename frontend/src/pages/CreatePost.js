@@ -8,28 +8,38 @@ export default function CreatePost() {
   const [title,setTitle] = useState('');
   const [summary,setSummary] = useState('');
   const [content,setContent] = useState('');
-  const [files, setFiles] = useState('');
+  const [files, setFiles] = useState(null);
   const [redirect, setRedirect] = useState(false);
+  
   async function createNewPost(ev) {
-    const data = new FormData();
-    data.set('title', title);
-    data.set('summary', summary);
-    data.set('content', content);
-    data.set('file', files[0]);
     ev.preventDefault();
-    const response = await fetch('https://blogit-sioi.onrender.com/post', {
-      method: 'POST',
-      body: data,
-      mode:'no-cors',
-      credentials: 'include',
-    });
-    if (response.ok) {
-      setRedirect(true);
+
+    const formData = new FormData();
+    formData.append("title", title);
+    formData.append("summary", summary);
+    formData.append("content", content);
+    if (files) {
+      formData.append("file", files[0]);
+    }
+    
+    try {
+      const response = await fetch("https://blogit-sioi.onrender.com/post", {
+        method: "POST",
+        body: formData,
+        mode:'no-cors',
+        credentials: "include",
+      });
+
+      if (response.ok) {
+        setRedirect(true);
+      }
+    } catch (error) {
+      console.error("Error creating post:", error.message);
     }
   }
 
   if (redirect) {
-    return <Navigate to={'/'} />
+    return <Navigate to={"/"} />;
   }
   return (
     <form onSubmit={createNewPost}>
